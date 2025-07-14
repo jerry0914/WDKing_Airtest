@@ -70,7 +70,7 @@ def _close_navi(lastResult:bool = False)->bool:
         _close_navi(True)
     return result
 
-def _waitForExists(v,retry:int):
+def _waitForExists(v,retry:int=1):
     result=False
     for i in range(0, retry):
         result = exists(v)
@@ -78,7 +78,7 @@ def _waitForExists(v,retry:int):
             break
     return result
 
-def _waitAndTouchTarget(v,retry:int=3):
+def _waitAndTouchTarget(v,retry:int=1):
     target = _waitForExists(v,retry)
     if target:
         touch(target)
@@ -102,9 +102,11 @@ def Ready_To_Play():
         close_ad_and_nave()
     elif is_app_start == "ad":
         close_ad_and_nave()
-    _waitAndTouchTarget(Template(r"tpl1751973367903.png", record_pos=(-0.275, 0.007), resolution=(1080, 2400)),retry=10)
+    check=_waitAndTouchTarget(Template(r"tpl1751973367903.png", record_pos=(-0.275, 0.007), resolution=(1080, 2400)),retry=10)
+    assert_not_equal(check,False)
     sleep(1)
-    assert check_lobby_ready()
+    final=check_lobby_ready()
+    assert_not_equal(final,False)
     
 def check_lobby_ready():
     return _waitForExists(Template(r"tpl1752222802882.png", record_pos=(-0.354, 0.869), resolution=(1080, 2400)),retry=3)
@@ -121,10 +123,10 @@ def Click_SP_Tab():
 def Click_Home_Tab():
     return _waitAndTouchTarget(Template(r"tpl1752222802882.png", record_pos=(-0.354, 0.869), resolution=(1080, 2400)))
 
-def Close_MsgBox():
-    _waitAndTouchTarget(Template(r"tpl1752221679199.png", record_pos=(-0.006, 0.083), resolution=(1080, 2400)),retry=2)
+def Close_FirstSpinMsgBox():
+    _waitAndTouchTarget(Template(r"tpl1752221679199.png", record_pos=(-0.006, 0.083), resolution=(1080, 2400)),retry=6)
         
-def BackToLobbyInGame():
-    _waitAndTouchTarget(Template(r"tpl1752221821048.png", record_pos=(-0.253, -0.996), resolution=(1080, 2400)),retry=2)
+def GoBackHallInGame():
+    return _waitAndTouchTarget(Template(r"tpl1752221821048.png", record_pos=(-0.253, -0.996), resolution=(1080, 2400)),retry=2)
 
 Ready_To_Play()
